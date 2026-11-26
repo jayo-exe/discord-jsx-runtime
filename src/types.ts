@@ -8,7 +8,7 @@ export type ComponentFunction = (props: ComponentProps, key?: ComponentKey) => J
 export type PropsFromAPIType<T> =
   Omit<T, "type" | "id" | "components"> &
   (T extends { components?: infer C }
-    ? { children?: JSXElement }
+    ? { children?: JSXElement | JSXElement[] }
     : {})
 
 export type JSXElement = ComponentResult
