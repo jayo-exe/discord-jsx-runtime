@@ -1,9 +1,29 @@
-export { Container, TextDisplay } from "./elements.js"
-export type { ContainerProps, TextDisplayProps } from "./elements.js"
+export { 
+  Container, 
+  ActionRow,
+  Button,
+  TextDisplay,
+  Section,
+  Separator,
+  Thumbnail,
+  File,
+  FileUpload,
+  MediaGallery,
+  Checkbox,
+  CheckboxGroup,
+  RadioGroup,
+  MentionableSelect,
+  UserSelect,
+  RoleSelect,
+  ChannelSelect,
+  StringSelect,
+  Label,
+  TextInput
+} from "./elements.js"
 export type {
   ComponentKey,
   ComponentProps,
   ComponentResult,
-  ComponentType
+  ComponentFunction
 } from "./types.js"
 export { Fragment } from "./jsx-runtime.js"

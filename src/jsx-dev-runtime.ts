@@ -1,10 +1,10 @@
-import type { ComponentKey, ComponentResult, ComponentProps, ComponentType } from "./types.js"
+import type { ComponentKey, ComponentResult, ComponentProps, ComponentFunction } from "./types.js"
 import { jsx, Fragment } from "./jsx-runtime.js"
 
 export { Fragment }
 
 export function jsxDEV(
-  type: ComponentType,
+  type: ComponentFunction,
     props: ComponentProps | null,
     key?: ComponentKey,
   _isStaticChildren?: boolean,

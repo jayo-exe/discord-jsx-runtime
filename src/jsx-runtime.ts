@@ -1,4 +1,4 @@
-import type { ComponentKey, ComponentResult, ComponentProps, ComponentType } from "./types.js"
+import type { ComponentKey, ComponentResult, ComponentProps, ComponentFunction } from "./types.js"
 
 export function Fragment(props: ComponentProps): ComponentResult[] {
   return Array.isArray(props.children)
@@ -9,7 +9,7 @@ export function Fragment(props: ComponentProps): ComponentResult[] {
 }
 
 export function jsx(
-  type: ComponentType,
+  type: ComponentFunction,
   props: ComponentProps | null,
   key?: ComponentKey
 ): ComponentResult {
