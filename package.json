@@ -1,0 +1,39 @@
+{
+  "name": "discord-jsx-runtime",
+  "description": "A JSX interpreter and runtime for Discord component-driven messages",
+  "license": "MIT",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./jsx-runtime": {
+      "types": "./dist/jsx-runtime.d.ts",
+      "import": "./dist/jsx-runtime.js"
+    },
+    "./jsx-dev-runtime": {
+      "types": "./dist/jsx-dev-runtime.d.ts",
+      "import": "./dist/jsx-dev-runtime.js"
+    },
+    "./interpreter": {
+      "types": "./dist/interpreter.d.ts",
+      "import": "./dist/interpreter.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@discordjs/builders": "^1.15.0",
+    "discord-api-types": "^0.38.58"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
