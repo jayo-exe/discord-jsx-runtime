@@ -1,6 +1,8 @@
 {
   "name": "discord-jsx-runtime",
-  "description": "A JSX interpreter and runtime for Discord component-driven messages",
+  "version": "0.0.1",
+  "author": "Anastasia Jayo",
+  "description": "A JSX runtime interpreter for Discord component-driven messages",
   "license": "MIT",
   "type": "module",
   "exports": {
@@ -15,10 +17,6 @@
     "./jsx-dev-runtime": {
       "types": "./dist/jsx-dev-runtime.d.ts",
       "import": "./dist/jsx-dev-runtime.js"
-    },
-    "./interpreter": {
-      "types": "./dist/interpreter.d.ts",
-      "import": "./dist/interpreter.js"
     }
   },
   "files": [
@@ -30,7 +28,6 @@
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
-    "@discordjs/builders": "^1.15.0",
     "discord-api-types": "^0.38.58"
   },
   "engines": {
