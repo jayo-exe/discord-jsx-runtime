@@ -1,0 +1,1 @@
+{"version":3,"file":"jsx-dev-runtime.js","sourceRoot":"","sources":["../src/jsx-dev-runtime.ts"],"names":[],"mappings":"AACA,OAAO,EAAE,GAAG,EAAE,QAAQ,EAAE,MAAM,kBAAkB,CAAA;AAEhD,OAAO,EAAE,QAAQ,EAAE,CAAA;AAEnB,MAAM,UAAU,MAAM,CACpB,IAAuB,EACrB,KAA4B,EAC5B,GAAkB,EACpB,iBAA2B,EAC3B,OAAiB,EACjB,KAAe;IAEf,OAAO,GAAG,CAAC,IAAI,EAAE,KAAK,EAAE,GAAG,CAAC,CAAA;AAC9B,CAAC"}
