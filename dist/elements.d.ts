@@ -1,13 +1,25 @@
 import type { JSXElement, PropsFromAPIType } from "./types";
-import { ComponentType, type APIActionRowComponent, type APIBaseComponent, type APIButtonComponent, type APIChannelSelectComponent, type APICheckboxComponent, type APICheckboxGroupComponent, type APIComponentInActionRow, type APIContainerComponent, type APIFileComponent, type APIFileUploadComponent, type APILabelComponent, type APIMediaGalleryComponent, type APIMentionableSelectComponent, type APIRadioGroupComponent, type APIRoleSelectComponent, type APISectionComponent, type APISeparatorComponent, type APIStringSelectComponent, type APITextDisplayComponent, type APITextInputComponent, type APIThumbnailComponent, type APIUserSelectComponent } from "discord-api-types/v10";
-export declare function MessageComponent<T extends APIBaseComponent<C>, C extends ComponentType, P extends Record<string, unknown> = PropsFromAPIType<T>>(type: C, props: P): T;
+import { ComponentType, type APIActionRowComponent, type APIBaseComponent, type APIButtonComponent, type APIButtonComponentWithCustomId, type APIButtonComponentWithSKUId, type APIButtonComponentWithURL, type APIChannelSelectComponent, type APICheckboxComponent, type APICheckboxGroupComponent, type APIComponentInActionRow, type APIContainerComponent, type APIFileComponent, type APIFileUploadComponent, type APILabelComponent, type APIMediaGalleryComponent, type APIMentionableSelectComponent, type APIModalInteractionResponse, type APIRadioGroupComponent, type APIRoleSelectComponent, type APISectionComponent, type APISeparatorComponent, type APIStringSelectComponent, type APITextDisplayComponent, type APITextInputComponent, type APIThumbnailComponent, type APIUserSelectComponent } from "discord-api-types/v10";
+export declare function normalizeChildren(children: JSXElement | JSXElement[]): JSXElement[];
+export declare function filterChildren(children: JSXElement | JSXElement[], allowedTypes?: JSXElement["type"][]): JSXElement[];
+export declare function MessageComponent<T extends APIBaseComponent<C>, C extends ComponentType, P extends Record<string, unknown> & {
+    children?: JSXElement | JSXElement[];
+} = PropsFromAPIType<T>>(type: C, props: P, childrenFilter?: JSXElement["type"][]): T;
+export declare function MessageObject(components: JSXElement | JSXElement[] | string): JSXElement[];
+export declare function ModalObject(custom_id: string, title: string, components: JSXElement | JSXElement[] | string): APIModalInteractionResponse["data"];
 export type ContainerProps = PropsFromAPIType<APIContainerComponent>;
 export declare const Container: (props: ContainerProps) => APIContainerComponent;
 export type ActionRowProps = PropsFromAPIType<APIActionRowComponent<APIComponentInActionRow>>;
 export declare const ActionRow: (props: ActionRowProps) => APIActionRowComponent<APIComponentInActionRow>;
-export type ButtonProps = PropsFromAPIType<APIButtonComponent>;
+export type ButtonProps = PropsFromAPIType<APIButtonComponent> & {
+    children?: string;
+};
 export declare const Button: (props: ButtonProps) => APIButtonComponent;
-export type TextDisplayProps = PropsFromAPIType<APITextDisplayComponent>;
+export type ThumbnailProps = PropsFromAPIType<APIThumbnailComponent>;
+export declare const Thumbnail: (props: ThumbnailProps) => APIThumbnailComponent;
+export type TextDisplayProps = PropsFromAPIType<APITextDisplayComponent> & {
+    children?: string;
+};
 export declare const TextDisplay: (props: TextDisplayProps) => APITextDisplayComponent;
 export type SectionProps = Omit<PropsFromAPIType<APISectionComponent>, "accessory"> & {
     accessory: JSXElement;
@@ -15,8 +27,6 @@ export type SectionProps = Omit<PropsFromAPIType<APISectionComponent>, "accessor
 export declare const Section: (props: SectionProps) => APISectionComponent;
 export type SeparatorProps = PropsFromAPIType<APISeparatorComponent>;
 export declare const Separator: (props: SeparatorProps) => APISeparatorComponent;
-export type ThumbnailProps = PropsFromAPIType<APIThumbnailComponent>;
-export declare const Thumbnail: (props: ThumbnailProps) => APIThumbnailComponent;
 export type FileProps = PropsFromAPIType<APIFileComponent>;
 export declare const File: (props: FileProps) => APIFileComponent;
 export type FileUploadProps = PropsFromAPIType<APIFileUploadComponent>;
@@ -43,4 +53,31 @@ export type LabelProps = PropsFromAPIType<APILabelComponent>;
 export declare const Label: (props: LabelProps) => APILabelComponent;
 export type TextInputProps = PropsFromAPIType<APITextInputComponent>;
 export declare const TextInput: (props: TextInputProps) => APITextInputComponent;
+export declare const Text: typeof TextDisplay;
+export type InteractButtonProps = Omit<PropsFromAPIType<APIButtonComponentWithCustomId>, "style">;
+export declare const PrimaryButton: (props: InteractButtonProps) => APIButtonComponent;
+export declare const SecondaryButton: (props: InteractButtonProps) => APIButtonComponent;
+export declare const SuccessButton: (props: InteractButtonProps) => APIButtonComponent;
+export declare const DangerButton: (props: InteractButtonProps) => APIButtonComponent;
+export type LinkButtonProps = Omit<PropsFromAPIType<APIButtonComponentWithURL>, "style">;
+export declare const LinkButton: (props: LinkButtonProps) => APIButtonComponent;
+export declare const Link: typeof LinkButton;
+export type PremiumButtonProps = Omit<PropsFromAPIType<APIButtonComponentWithSKUId>, "style">;
+export declare const PremiumButton: (props: PremiumButtonProps) => APIButtonComponent;
+export type CompactSectionProps<T> = Omit<T, "children"> & {
+    children?: JSXElement | JSXElement[];
+};
+export type ButtonSectionProps = CompactSectionProps<ButtonProps>;
+export declare const ButtonSection: (props: ButtonSectionProps) => APISectionComponent;
+export type InteractButtonSectionProps = CompactSectionProps<InteractButtonProps>;
+export declare const PrimaryButtonSection: (props: InteractButtonSectionProps) => APISectionComponent;
+export declare const SecondaryButtonSection: (props: InteractButtonSectionProps) => APISectionComponent;
+export declare const SuccessButtonSection: (props: InteractButtonSectionProps) => APISectionComponent;
+export declare const DangerButtonSection: (props: InteractButtonSectionProps) => APISectionComponent;
+export type LinkButtonSectionProps = CompactSectionProps<LinkButtonProps>;
+export declare const LinkButtonSection: (props: LinkButtonSectionProps) => APISectionComponent;
+export type PremiumButtonSectionProps = CompactSectionProps<PremiumButtonProps>;
+export declare const PremiumButtonSection: (props: PremiumButtonSectionProps) => APISectionComponent;
+export type ThumbnailSectionProps = CompactSectionProps<ThumbnailProps>;
+export declare const ThumbnailSection: (props: ThumbnailSectionProps) => APISectionComponent;
 //# sourceMappingURL=elements.d.ts.map
