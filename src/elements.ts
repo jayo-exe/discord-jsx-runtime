@@ -3,7 +3,7 @@ import { ComponentType, type APIActionRowComponent, type APIBaseComponent, type 
 
 export function MessageComponent
 <T extends APIBaseComponent<C>, C extends ComponentType>
-(type: C, props: PropsFromAPIType<T>) 
+(type: C, props: PropsFromAPIType<T>): T 
 {
   let finalProps: Record<string, unknown>
   if ("children" in props) {
@@ -16,82 +16,82 @@ export function MessageComponent
 }
 
 export type ContainerProps = PropsFromAPIType<APIContainerComponent>
-export const Container = (props: ContainerProps) => 
-  MessageComponent(ComponentType.Container, props)
+export const Container = (props: ContainerProps): APIContainerComponent => 
+  MessageComponent<APIContainerComponent, ComponentType.Container>(ComponentType.Container, props)
 
 export type ActionRowProps = PropsFromAPIType<APIActionRowComponent<APIComponentInActionRow>>
-export const ActionRow = (props: ActionRowProps) => 
-  MessageComponent(ComponentType.ActionRow, props)
+export const ActionRow = (props: ActionRowProps): APIActionRowComponent<APIComponentInActionRow> => 
+  MessageComponent<APIActionRowComponent<APIComponentInActionRow>, ComponentType.ActionRow>(ComponentType.ActionRow, props)
 
 export type ButtonProps = PropsFromAPIType<APIButtonComponent>
-export const Button = (props: ButtonProps) => 
-  MessageComponent(ComponentType.Button, props)
+export const Button = (props: ButtonProps): APIButtonComponent => 
+  MessageComponent<APIButtonComponent, ComponentType.Button>(ComponentType.Button, props)
 
 export type TextDisplayProps = PropsFromAPIType<APITextDisplayComponent>
-export const TextDisplay = (props: TextDisplayProps) => 
-  MessageComponent(ComponentType.TextDisplay, props)
+export const TextDisplay = (props: TextDisplayProps): APITextDisplayComponent => 
+  MessageComponent<APITextDisplayComponent, ComponentType.TextDisplay>(ComponentType.TextDisplay, props)
 
 export type SectionProps = PropsFromAPIType<APISectionComponent>
-export const Section = (props: SectionProps) => 
-  MessageComponent(ComponentType.Section, props)
+export const Section = (props: SectionProps): APISectionComponent => 
+  MessageComponent<APISectionComponent, ComponentType.Section>(ComponentType.Section, props)
 
 export type SeparatorProps = PropsFromAPIType<APISeparatorComponent>
-export const Separator = (props: SeparatorProps) => 
-  MessageComponent(ComponentType.Separator, props)
+export const Separator = (props: SeparatorProps): APISeparatorComponent => 
+  MessageComponent<APISeparatorComponent, ComponentType.Separator>(ComponentType.Separator, props)
 
 export type ThumbnailProps = PropsFromAPIType<APIThumbnailComponent>
-export const Thumbnail = (props: ThumbnailProps) => 
-  MessageComponent(ComponentType.Thumbnail, props)
+export const Thumbnail = (props: ThumbnailProps): APIThumbnailComponent => 
+  MessageComponent<APIThumbnailComponent, ComponentType.Thumbnail>(ComponentType.Thumbnail, props)
 
 export type FileProps = PropsFromAPIType<APIFileComponent>
-export const File = (props: FileProps) => 
-  MessageComponent(ComponentType.File, props)
+export const File = (props: FileProps): APIFileComponent => 
+  MessageComponent<APIFileComponent, ComponentType.File>(ComponentType.File, props)
 
 export type FileUploadProps = PropsFromAPIType<APIFileUploadComponent>
-export const FileUpload = (props: FileUploadProps) => 
-  MessageComponent(ComponentType.FileUpload, props)
+export const FileUpload = (props: FileUploadProps): APIFileUploadComponent => 
+  MessageComponent<APIFileUploadComponent, ComponentType.FileUpload>(ComponentType.FileUpload, props)
 
 export type MediaGalleryProps = PropsFromAPIType<APIMediaGalleryComponent>
-export const MediaGallery = (props: MediaGalleryProps) => 
-  MessageComponent(ComponentType.MediaGallery, props)
+export const MediaGallery = (props: MediaGalleryProps): APIMediaGalleryComponent => 
+  MessageComponent<APIMediaGalleryComponent, ComponentType.MediaGallery>(ComponentType.MediaGallery, props)
 
 export type CheckboxProps = PropsFromAPIType<APICheckboxComponent>
-export const Checkbox = (props: CheckboxProps) => 
-  MessageComponent(ComponentType.Checkbox, props)
+export const Checkbox = (props: CheckboxProps): APICheckboxComponent => 
+  MessageComponent<APICheckboxComponent, ComponentType.Checkbox>(ComponentType.Checkbox, props)
 
 export type CheckboxGroupProps = PropsFromAPIType<APICheckboxGroupComponent>
-export const CheckboxGroup = (props: CheckboxGroupProps) => 
-  MessageComponent(ComponentType.CheckboxGroup, props)
+export const CheckboxGroup = (props: CheckboxGroupProps): APICheckboxGroupComponent => 
+  MessageComponent<APICheckboxGroupComponent ,ComponentType.CheckboxGroup>(ComponentType.CheckboxGroup, props)
 
 export type RadioGroupProps = PropsFromAPIType<APIRadioGroupComponent>
-export const RadioGroup = (props: RadioGroupProps) => 
-  MessageComponent(ComponentType.RadioGroup, props)
+export const RadioGroup = (props: RadioGroupProps): APIRadioGroupComponent => 
+  MessageComponent<APIRadioGroupComponent ,ComponentType.RadioGroup>(ComponentType.RadioGroup, props)
 
 
 export type MentionableSelectProps = PropsFromAPIType<APIMentionableSelectComponent>
-export const MentionableSelect = (props: MentionableSelectProps) => 
-  MessageComponent(ComponentType.MentionableSelect, props)
+export const MentionableSelect = (props: MentionableSelectProps): APIMentionableSelectComponent => 
+  MessageComponent<APIMentionableSelectComponent, ComponentType.MentionableSelect>(ComponentType.MentionableSelect, props)
 
 export type UserSelectProps = PropsFromAPIType<APIUserSelectComponent>
-export const UserSelect = (props: UserSelectProps) => 
-  MessageComponent(ComponentType.UserSelect, props)
+export const UserSelect = (props: UserSelectProps): APIUserSelectComponent => 
+  MessageComponent<APIUserSelectComponent, ComponentType.UserSelect>(ComponentType.UserSelect, props)
 
 export type RoleSelectProps = PropsFromAPIType<APIRoleSelectComponent>
-export const RoleSelect = (props: RoleSelectProps) => 
-  MessageComponent(ComponentType.RoleSelect, props)
+export const RoleSelect = (props: RoleSelectProps): APIRoleSelectComponent => 
+  MessageComponent<APIRoleSelectComponent, ComponentType.RoleSelect>(ComponentType.RoleSelect, props)
 
 export type ChannelSelectProps = PropsFromAPIType<APIChannelSelectComponent>
-export const ChannelSelect = (props: ChannelSelectProps) => 
-  MessageComponent(ComponentType.ChannelSelect, props)
+export const ChannelSelect = (props: ChannelSelectProps): APIChannelSelectComponent => 
+  MessageComponent<APIChannelSelectComponent, ComponentType.ChannelSelect>(ComponentType.ChannelSelect, props)
 
 export type StringSelectProps = PropsFromAPIType<APIStringSelectComponent>
-export const StringSelect = (props: StringSelectProps) => 
-  MessageComponent(ComponentType.StringSelect, props)
+export const StringSelect = (props: StringSelectProps): APIStringSelectComponent => 
+  MessageComponent<APIStringSelectComponent, ComponentType.StringSelect>(ComponentType.StringSelect, props)
 
 export type LabelProps = PropsFromAPIType<APILabelComponent>
-export const Label = (props: LabelProps) => 
-  MessageComponent(ComponentType.Label, props)
+export const Label = (props: LabelProps): APILabelComponent => 
+  MessageComponent<APILabelComponent, ComponentType.Label>(ComponentType.Label, props)
 
 export type TextInputProps = PropsFromAPIType<APITextInputComponent>
-export const TextInput = (props: TextInputProps) => 
-  MessageComponent(ComponentType.TextInput, props)
+export const TextInput = (props: TextInputProps): APITextInputComponent => 
+  MessageComponent<APITextInputComponent, ComponentType.TextInput>(ComponentType.TextInput, props)
