@@ -3,7 +3,7 @@ import { ComponentType, type APIActionRowComponent, type APIBaseComponent, type 
 export declare function normalizeChildren(children: JSXElement | JSXElement[]): JSXElement[];
 export declare function filterChildren(children: JSXElement | JSXElement[], allowedTypes?: JSXElement["type"][]): JSXElement[];
 export declare function MessageComponent<T extends APIBaseComponent<C>, C extends ComponentType, P extends Record<string, unknown> & {
-    children?: JSXElement | JSXElement[];
+    children?: JSXElement | JSXElement[] | string;
 } = PropsFromAPIType<T>>(type: C, props: P, childrenFilter?: JSXElement["type"][]): T;
 export declare function MessageObject(components: JSXElement | JSXElement[] | string): APIMessageTopLevelComponent[];
 export declare function ModalObject(custom_id: string, title: string, components: JSXElement | JSXElement[] | string): APIModalInteractionResponseCallbackData;
@@ -17,7 +17,7 @@ export type ButtonProps = PropsFromAPIType<APIButtonComponent> & {
 export declare const Button: (props: ButtonProps) => APIButtonComponent;
 export type ThumbnailProps = PropsFromAPIType<APIThumbnailComponent>;
 export declare const Thumbnail: (props: ThumbnailProps) => APIThumbnailComponent;
-export type TextDisplayProps = PropsFromAPIType<APITextDisplayComponent> & {
+export type TextDisplayProps = Omit<PropsFromAPIType<APITextDisplayComponent>, "content"> & {
     children?: string;
     content?: string;
 };

@@ -15,7 +15,7 @@ export function filterChildren(children: JSXElement | JSXElement[], allowedTypes
 
 export function MessageComponent
 <T extends APIBaseComponent<C>, C extends ComponentType, P extends Record<string,unknown> & {
-    children?: JSXElement | JSXElement[]
+    children?: JSXElement | JSXElement[] | string
 } = PropsFromAPIType<T>>
 (type: C, props: P, childrenFilter?: JSXElement["type"][]): T 
 {
@@ -87,15 +87,18 @@ export const ActionRow = (props: ActionRowProps): APIActionRowComponent<APICompo
 
 export type ButtonProps = PropsFromAPIType<APIButtonComponent> & {children?: string}
 export const Button = (props: ButtonProps): APIButtonComponent => 
-  MessageComponent<APIButtonComponent, ComponentType.Button>(ComponentType.Button, props)
+  MessageComponent<APIButtonComponent, ComponentType.Button, ButtonProps>(ComponentType.Button, props)
 
 export type ThumbnailProps = PropsFromAPIType<APIThumbnailComponent>
 export const Thumbnail = (props: ThumbnailProps): APIThumbnailComponent => 
   MessageComponent<APIThumbnailComponent, ComponentType.Thumbnail>(ComponentType.Thumbnail, props)
 
-export type TextDisplayProps = PropsFromAPIType<APITextDisplayComponent> & {children?: string, content?: string}
+export type TextDisplayProps = Omit<PropsFromAPIType<APITextDisplayComponent>,"content"> & {
+    children?: string;
+    content?: string;
+}
 export const TextDisplay = (props: TextDisplayProps): APITextDisplayComponent => 
-  MessageComponent<APITextDisplayComponent, ComponentType.TextDisplay>(ComponentType.TextDisplay, props)
+  MessageComponent<APITextDisplayComponent, ComponentType.TextDisplay, TextDisplayProps>(ComponentType.TextDisplay, props)
 
 export type SectionProps = Omit<PropsFromAPIType<APISectionComponent>, "accessory"> & { accessory: JSXElement }
 export const Section = (props: SectionProps): APISectionComponent => 
