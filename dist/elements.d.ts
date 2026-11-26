@@ -19,6 +19,7 @@ export type ThumbnailProps = PropsFromAPIType<APIThumbnailComponent>;
 export declare const Thumbnail: (props: ThumbnailProps) => APIThumbnailComponent;
 export type TextDisplayProps = PropsFromAPIType<APITextDisplayComponent> & {
     children?: string;
+    content?: string;
 };
 export declare const TextDisplay: (props: TextDisplayProps) => APITextDisplayComponent;
 export type SectionProps = Omit<PropsFromAPIType<APISectionComponent>, "accessory"> & {

@@ -22,13 +22,13 @@ export function MessageComponent(type, props, childrenFilter) {
     childrenProp = typeof children === "string"
         ? type === ComponentType.TextDisplay
             ? { content: children }
-            : { components: [MessageComponent(10, { content: children })] }
+            : { components: [{ type: 10, content: children }] }
         : { components: filterChildren(children, childrenFilter) };
-    return { type, ...childrenProp, ...restProps };
+    return { type, ...restProps, ...childrenProp };
 }
 export function MessageObject(components) {
     if (typeof components === "string")
-        components = [MessageComponent(10, { content: components })];
+        components = [{ type: 10, content: components }];
     if (!Array.isArray(components))
         components = [components];
     const topLevelMessageTypes = [
@@ -44,7 +44,7 @@ export function MessageObject(components) {
 }
 export function ModalObject(custom_id, title, components) {
     if (typeof components === "string")
-        components = [MessageComponent(10, { content: components })];
+        components = [{ type: 10, content: components }];
     if (!Array.isArray(components))
         components = [components];
     const topLevelModalTypes = [

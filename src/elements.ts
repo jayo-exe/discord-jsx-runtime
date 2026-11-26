@@ -29,14 +29,14 @@ export function MessageComponent
   childrenProp = typeof children === "string"
     ? type === ComponentType.TextDisplay
       ? { content: children } 
-      : {components: [MessageComponent<APITextDisplayComponent, 10>(10, {content: children})]}
+      : {components: [{type: 10, content: children}]}
     : { components: filterChildren(children!, childrenFilter) }
     
-  return {type, ...childrenProp, ...restProps} as T
+  return {type, ...restProps, ...childrenProp} as T
 }
 
 export function MessageObject(components: JSXElement | JSXElement[] | string,): APIMessageTopLevelComponent[] {
-  if(typeof components === "string") components = [MessageComponent<APITextDisplayComponent, 10>(10, {content: components})]
+  if(typeof components === "string") components = [{type: 10, content: components}]
   if (!Array.isArray(components)) components = [components]
   const topLevelMessageTypes = [
     ComponentType.ActionRow,
@@ -51,7 +51,7 @@ export function MessageObject(components: JSXElement | JSXElement[] | string,): 
 }
 
 export function ModalObject(custom_id: string, title: string, components: JSXElement | JSXElement[] | string,): APIModalInteractionResponseCallbackData {
-  if(typeof components === "string") components = [MessageComponent<APITextDisplayComponent, 10>(10, {content: components})]
+  if(typeof components === "string") components = [{type: 10, content: components}]
   if (!Array.isArray(components)) components = [components]
   const topLevelModalTypes = [
     ComponentType.ActionRow,
@@ -93,7 +93,7 @@ export type ThumbnailProps = PropsFromAPIType<APIThumbnailComponent>
 export const Thumbnail = (props: ThumbnailProps): APIThumbnailComponent => 
   MessageComponent<APIThumbnailComponent, ComponentType.Thumbnail>(ComponentType.Thumbnail, props)
 
-export type TextDisplayProps = PropsFromAPIType<APITextDisplayComponent> & {children?: string}
+export type TextDisplayProps = PropsFromAPIType<APITextDisplayComponent> & {children?: string, content?: string}
 export const TextDisplay = (props: TextDisplayProps): APITextDisplayComponent => 
   MessageComponent<APITextDisplayComponent, ComponentType.TextDisplay>(ComponentType.TextDisplay, props)
 
