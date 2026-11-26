@@ -1,6 +1,6 @@
-import type { PropsFromAPIType } from "./types";
+import type { JSXElement, PropsFromAPIType } from "./types";
 import { ComponentType, type APIActionRowComponent, type APIBaseComponent, type APIButtonComponent, type APIChannelSelectComponent, type APICheckboxComponent, type APICheckboxGroupComponent, type APIComponentInActionRow, type APIContainerComponent, type APIFileComponent, type APIFileUploadComponent, type APILabelComponent, type APIMediaGalleryComponent, type APIMentionableSelectComponent, type APIRadioGroupComponent, type APIRoleSelectComponent, type APISectionComponent, type APISeparatorComponent, type APIStringSelectComponent, type APITextDisplayComponent, type APITextInputComponent, type APIThumbnailComponent, type APIUserSelectComponent } from "discord-api-types/v10";
-export declare function MessageComponent<T extends APIBaseComponent<C>, C extends ComponentType>(type: C, props: PropsFromAPIType<T>): T;
+export declare function MessageComponent<T extends APIBaseComponent<C>, C extends ComponentType, P extends Record<string, unknown> = PropsFromAPIType<T>>(type: C, props: P): T;
 export type ContainerProps = PropsFromAPIType<APIContainerComponent>;
 export declare const Container: (props: ContainerProps) => APIContainerComponent;
 export type ActionRowProps = PropsFromAPIType<APIActionRowComponent<APIComponentInActionRow>>;
@@ -9,7 +9,9 @@ export type ButtonProps = PropsFromAPIType<APIButtonComponent>;
 export declare const Button: (props: ButtonProps) => APIButtonComponent;
 export type TextDisplayProps = PropsFromAPIType<APITextDisplayComponent>;
 export declare const TextDisplay: (props: TextDisplayProps) => APITextDisplayComponent;
-export type SectionProps = PropsFromAPIType<APISectionComponent>;
+export type SectionProps = Omit<PropsFromAPIType<APISectionComponent>, "accessory"> & {
+    accessory: JSXElement;
+};
 export declare const Section: (props: SectionProps) => APISectionComponent;
 export type SeparatorProps = PropsFromAPIType<APISeparatorComponent>;
 export declare const Separator: (props: SeparatorProps) => APISeparatorComponent;

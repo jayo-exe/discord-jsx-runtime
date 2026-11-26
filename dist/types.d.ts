@@ -3,10 +3,10 @@ export type ComponentKey = string | number;
 export type ComponentProps = Record<string, unknown>;
 export type ComponentResult = APIMessageComponent | APIModalComponent | APIComponentInLabel;
 export type ComponentFunction = (props: ComponentProps, key?: ComponentKey) => JSXElement;
-export type PropsFromAPIType<T> = Omit<T, "type" | "id" | "components"> & (T extends {
+export type PropsFromAPIType<T> = T extends unknown ? Omit<T, "type" | "id" | "components"> & (T extends {
     components?: infer C;
 } ? {
     children?: JSXElement | JSXElement[];
-} : {});
+} : {}) : never;
 export type JSXElement = ComponentResult;
 //# sourceMappingURL=types.d.ts.map

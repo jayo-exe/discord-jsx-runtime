@@ -6,9 +6,11 @@ export type ComponentResult = APIMessageComponent | APIModalComponent | APICompo
 
 export type ComponentFunction = (props: ComponentProps, key?: ComponentKey) => JSXElement
 export type PropsFromAPIType<T> =
-  Omit<T, "type" | "id" | "components"> &
-  (T extends { components?: infer C }
-    ? { children?: JSXElement | JSXElement[] }
-    : {})
+  T extends unknown
+    ? Omit<T, "type" | "id" | "components"> &
+      (T extends { components?: infer C }
+        ? { children?: JSXElement | JSXElement[] }
+        : {})
+    : never
 
 export type JSXElement = ComponentResult

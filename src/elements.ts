@@ -1,9 +1,9 @@
-import type { ComponentProps, ComponentResult, PropsFromAPIType } from "./types"
+import type { ComponentProps, ComponentResult, JSXElement, PropsFromAPIType } from "./types"
 import { ComponentType, type APIActionRowComponent, type APIBaseComponent, type APIButtonComponent, type APIChannelSelectComponent, type APICheckboxComponent, type APICheckboxGroupComponent, type APIComponentInActionRow, type APIComponentInContainer, type APIContainerComponent, type APIFileComponent, type APIFileUploadComponent, type APILabelComponent, type APIMediaGalleryComponent, type APIMentionableSelectComponent, type APIRadioGroupComponent, type APIRoleSelectComponent, type APISectionComponent, type APISeparatorComponent, type APIStringSelectComponent, type APITextDisplayComponent, type APITextInputComponent, type APIThumbnailComponent, type APIUserSelectComponent } from "discord-api-types/v10"
 
 export function MessageComponent
-<T extends APIBaseComponent<C>, C extends ComponentType>
-(type: C, props: PropsFromAPIType<T>): T 
+<T extends APIBaseComponent<C>, C extends ComponentType, P extends Record<string,unknown> = PropsFromAPIType<T>>
+(type: C, props: P): T 
 {
   let finalProps: Record<string, unknown>
   if ("children" in props) {
@@ -31,9 +31,9 @@ export type TextDisplayProps = PropsFromAPIType<APITextDisplayComponent>
 export const TextDisplay = (props: TextDisplayProps): APITextDisplayComponent => 
   MessageComponent<APITextDisplayComponent, ComponentType.TextDisplay>(ComponentType.TextDisplay, props)
 
-export type SectionProps = PropsFromAPIType<APISectionComponent>
+export type SectionProps = Omit<PropsFromAPIType<APISectionComponent>, "accessory"> & { accessory: JSXElement };
 export const Section = (props: SectionProps): APISectionComponent => 
-  MessageComponent<APISectionComponent, ComponentType.Section>(ComponentType.Section, props)
+  MessageComponent<APISectionComponent, ComponentType.Section, SectionProps>(ComponentType.Section, props)
 
 export type SeparatorProps = PropsFromAPIType<APISeparatorComponent>
 export const Separator = (props: SeparatorProps): APISeparatorComponent => 
