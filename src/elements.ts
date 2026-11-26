@@ -1,5 +1,5 @@
 import type { ComponentProps, ComponentResult, JSXElement, PropsFromAPIType } from "./types"
-import { ButtonStyle, ComponentType, type APIActionRowComponent, type APIBaseComponent, type APIButtonComponent, type APIButtonComponentWithCustomId, type APIButtonComponentWithSKUId, type APIButtonComponentWithURL, type APIChannelSelectComponent, type APICheckboxComponent, type APICheckboxGroupComponent, type APIComponentInActionRow, type APIComponentInContainer, type APIContainerComponent, type APIFileComponent, type APIFileUploadComponent, type APILabelComponent, type APIMediaGalleryComponent, type APIMentionableSelectComponent, type APIModalComponent, type APIModalInteractionResponse, type APIRadioGroupComponent, type APIRoleSelectComponent, type APISectionComponent, type APISeparatorComponent, type APIStringSelectComponent, type APITextDisplayComponent, type APITextInputComponent, type APIThumbnailComponent, type APIUserSelectComponent } from "discord-api-types/v10"
+import { ButtonStyle, ComponentType, type APIActionRowComponent, type APIBaseComponent, type APIButtonComponent, type APIButtonComponentWithCustomId, type APIButtonComponentWithSKUId, type APIButtonComponentWithURL, type APIChannelSelectComponent, type APICheckboxComponent, type APICheckboxGroupComponent, type APIComponentInActionRow, type APIComponentInContainer, type APIContainerComponent, type APIFileComponent, type APIFileUploadComponent, type APILabelComponent, type APIMediaGalleryComponent, type APIMentionableSelectComponent, type APIMessageTopLevelComponent, type APIModalComponent, type APIModalInteractionResponse, type APIModalInteractionResponseCallbackComponent, type APIModalInteractionResponseCallbackData, type APIRadioGroupComponent, type APIRoleSelectComponent, type APISectionComponent, type APISeparatorComponent, type APIStringSelectComponent, type APITextDisplayComponent, type APITextInputComponent, type APIThumbnailComponent, type APIUserSelectComponent } from "discord-api-types/v10"
 
 export function normalizeChildren(children: JSXElement | JSXElement[]): JSXElement[] {
   if (children == null || typeof children === "boolean") return []
@@ -35,7 +35,7 @@ export function MessageComponent
   return {type, ...childrenProp, ...restProps} as T
 }
 
-export function MessageObject(components: JSXElement | JSXElement[] | string,): JSXElement[] {
+export function MessageObject(components: JSXElement | JSXElement[] | string,): APIMessageTopLevelComponent[] {
   if(typeof components === "string") components = [MessageComponent<APITextDisplayComponent, 10>(10, {content: components})]
   if (!Array.isArray(components)) components = [components]
   const topLevelMessageTypes = [
@@ -47,10 +47,10 @@ export function MessageObject(components: JSXElement | JSXElement[] | string,): 
     ComponentType.Separator,
     ComponentType.TextDisplay
   ]
-  return components.filter(component => topLevelMessageTypes.includes(component.type))
+  return components.filter(component => topLevelMessageTypes.includes(component.type)) as APIMessageTopLevelComponent[]
 }
 
-export function ModalObject(custom_id: string, title: string, components: JSXElement | JSXElement[] | string,): APIModalInteractionResponse["data"] {
+export function ModalObject(custom_id: string, title: string, components: JSXElement | JSXElement[] | string,): APIModalInteractionResponseCallbackData {
   if(typeof components === "string") components = [MessageComponent<APITextDisplayComponent, 10>(10, {content: components})]
   if (!Array.isArray(components)) components = [components]
   const topLevelModalTypes = [
@@ -58,7 +58,7 @@ export function ModalObject(custom_id: string, title: string, components: JSXEle
     ComponentType.Label,
     ComponentType.TextDisplay
   ]
-  const modalComponents = components.filter(component => topLevelModalTypes.includes(component.type)) as APIModalInteractionResponse["data"]["components"]
+  const modalComponents = components.filter(component => topLevelModalTypes.includes(component.type)) as APIModalInteractionResponseCallbackComponent[]
   return {title, custom_id, components: modalComponents}
 }
 

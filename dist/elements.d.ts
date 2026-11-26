@@ -1,12 +1,12 @@
 import type { JSXElement, PropsFromAPIType } from "./types";
-import { ComponentType, type APIActionRowComponent, type APIBaseComponent, type APIButtonComponent, type APIButtonComponentWithCustomId, type APIButtonComponentWithSKUId, type APIButtonComponentWithURL, type APIChannelSelectComponent, type APICheckboxComponent, type APICheckboxGroupComponent, type APIComponentInActionRow, type APIContainerComponent, type APIFileComponent, type APIFileUploadComponent, type APILabelComponent, type APIMediaGalleryComponent, type APIMentionableSelectComponent, type APIModalInteractionResponse, type APIRadioGroupComponent, type APIRoleSelectComponent, type APISectionComponent, type APISeparatorComponent, type APIStringSelectComponent, type APITextDisplayComponent, type APITextInputComponent, type APIThumbnailComponent, type APIUserSelectComponent } from "discord-api-types/v10";
+import { ComponentType, type APIActionRowComponent, type APIBaseComponent, type APIButtonComponent, type APIButtonComponentWithCustomId, type APIButtonComponentWithSKUId, type APIButtonComponentWithURL, type APIChannelSelectComponent, type APICheckboxComponent, type APICheckboxGroupComponent, type APIComponentInActionRow, type APIContainerComponent, type APIFileComponent, type APIFileUploadComponent, type APILabelComponent, type APIMediaGalleryComponent, type APIMentionableSelectComponent, type APIMessageTopLevelComponent, type APIModalInteractionResponseCallbackData, type APIRadioGroupComponent, type APIRoleSelectComponent, type APISectionComponent, type APISeparatorComponent, type APIStringSelectComponent, type APITextDisplayComponent, type APITextInputComponent, type APIThumbnailComponent, type APIUserSelectComponent } from "discord-api-types/v10";
 export declare function normalizeChildren(children: JSXElement | JSXElement[]): JSXElement[];
 export declare function filterChildren(children: JSXElement | JSXElement[], allowedTypes?: JSXElement["type"][]): JSXElement[];
 export declare function MessageComponent<T extends APIBaseComponent<C>, C extends ComponentType, P extends Record<string, unknown> & {
     children?: JSXElement | JSXElement[];
 } = PropsFromAPIType<T>>(type: C, props: P, childrenFilter?: JSXElement["type"][]): T;
-export declare function MessageObject(components: JSXElement | JSXElement[] | string): JSXElement[];
-export declare function ModalObject(custom_id: string, title: string, components: JSXElement | JSXElement[] | string): APIModalInteractionResponse["data"];
+export declare function MessageObject(components: JSXElement | JSXElement[] | string): APIMessageTopLevelComponent[];
+export declare function ModalObject(custom_id: string, title: string, components: JSXElement | JSXElement[] | string): APIModalInteractionResponseCallbackData;
 export type ContainerProps = PropsFromAPIType<APIContainerComponent>;
 export declare const Container: (props: ContainerProps) => APIContainerComponent;
 export type ActionRowProps = PropsFromAPIType<APIActionRowComponent<APIComponentInActionRow>>;
