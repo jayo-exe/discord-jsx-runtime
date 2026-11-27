@@ -1,4 +1,4 @@
-import { ButtonStyle, ComponentType } from "discord-api-types/v10";
+import { ButtonStyle, ComponentType, TextInputStyle } from "discord-api-types/v10";
 function combineStrings(children) {
     return children.reduce((result, item) => {
         const last = result[result.length - 1];
@@ -155,4 +155,15 @@ export const ThumbnailSection = (props) => Section({
     children: props.children,
     accessory: Thumbnail(props)
 });
+export const ModalTextInput = (props) => Label({ ...props, children: TextInput({ ...props, style: TextInputStyle.Short }) });
+export const ModalTextArea = (props) => Label({ ...props, children: TextInput({ ...props, style: TextInputStyle.Paragraph }) });
+export const ModalCheckbox = (props) => Label({ ...props, children: Checkbox({ ...props }) });
+export const ModalCheckboxGroup = (props) => Label({ ...props, children: CheckboxGroup({ ...props }) });
+export const ModalRadioGroup = (props) => Label({ ...props, children: RadioGroup({ ...props }) });
+export const ModalFileUpload = (props) => Label({ ...props, children: FileUpload({ ...props }) });
+export const ModalRoleSelect = (props) => Label({ ...props, children: RoleSelect({ ...props }) });
+export const ModalChannelSelect = (props) => Label({ ...props, children: ChannelSelect({ ...props }) });
+export const ModalUserSelect = (props) => Label({ ...props, children: UserSelect({ ...props }) });
+export const ModalMentionableSelect = (props) => Label({ ...props, children: MentionableSelect({ ...props }) });
+export const ModalStringSelect = (props) => Label({ ...props, children: StringSelect({ ...props }) });
 //# sourceMappingURL=elements.js.map

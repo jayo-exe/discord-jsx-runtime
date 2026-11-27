@@ -1,4 +1,4 @@
-import { ButtonStyle, ComponentType } from "discord-api-types/v10"
+import { ButtonStyle, ComponentType, TextInputStyle } from "discord-api-types/v10"
 import type { ComponentResult, JSXElement, PropsFromAPIType } from "./types"
 
 import type { 
@@ -288,4 +288,35 @@ export const ThumbnailSection = (props: ThumbnailSectionProps) => Section({
   accessory: Thumbnail(props)
 })
 
-// TODO: Label convenience elements for each to the fields that a label can contain
+export type ModalLabelComponentProps<T> = Omit<T & LabelProps, "children">
+
+export type ModalTextInputProps = Omit<ModalLabelComponentProps<TextInputProps>, "style">
+export const ModalTextInput = (props: ModalTextInputProps) => Label({...props, children: TextInput({...props, style: TextInputStyle.Short})})
+export const ModalTextArea = (props: ModalTextInputProps) => Label({...props, children: TextInput({...props, style: TextInputStyle.Paragraph})})
+
+export type ModalCheckboxProps = ModalLabelComponentProps<CheckboxProps>
+export const ModalCheckbox = (props: ModalCheckboxProps) => Label({...props, children: Checkbox({...props})})
+
+export type ModalCheckboxGroupProps = ModalLabelComponentProps<CheckboxGroupProps>
+export const ModalCheckboxGroup = (props: ModalCheckboxGroupProps) => Label({...props, children: CheckboxGroup({...props})})
+
+export type ModalRadioGroupProps = ModalLabelComponentProps<RadioGroupProps>
+export const ModalRadioGroup = (props: ModalRadioGroupProps) => Label({...props, children: RadioGroup({...props})})
+
+export type ModalFileUploadProps = ModalLabelComponentProps<FileUploadProps>
+export const ModalFileUpload = (props: ModalFileUploadProps) => Label({...props, children: FileUpload({...props})})
+
+export type ModalRoleSelectProps = ModalLabelComponentProps<RoleSelectProps>
+export const ModalRoleSelect = (props: ModalRoleSelectProps) => Label({...props, children: RoleSelect({...props})})
+
+export type ModalChannelSelectProps = ModalLabelComponentProps<ChannelSelectProps>
+export const ModalChannelSelect = (props: ModalChannelSelectProps) => Label({...props, children: ChannelSelect({...props})})
+
+export type ModalUserSelectProps = ModalLabelComponentProps<UserSelectProps>
+export const ModalUserSelect = (props: ModalUserSelectProps) => Label({...props, children: UserSelect({...props})})
+
+export type ModalMentionableSelectProps = ModalLabelComponentProps<MentionableSelectProps>
+export const ModalMentionableSelect = (props: ModalMentionableSelectProps) => Label({...props, children: MentionableSelect({...props})})
+
+export type ModalStringSelectProps = ModalLabelComponentProps<StringSelectProps>
+export const ModalStringSelect = (props: ModalStringSelectProps) => Label({...props, children: StringSelect({...props})})
