@@ -1,6 +1,6 @@
 {
   "name": "discord-jsx-runtime",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "author": "Anastasia Jayo",
   "description": "A JSX runtime interpreter for Discord component-driven messages",
   "license": "MIT",

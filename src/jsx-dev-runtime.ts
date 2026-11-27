@@ -4,13 +4,12 @@ import { jsx, Fragment } from "./jsx-runtime.js"
 export { Fragment }
 
 export function jsxDEV(
-  type: ComponentFunction | "br",
+  type: ComponentFunction,
     props: ComponentProps | null,
   _isStaticChildren?: boolean,
   _source?: unknown,
   _self?: unknown
 ): JSXElement {
-  if (type === "br") return "\n"
   return jsx(type, props)
 }
 

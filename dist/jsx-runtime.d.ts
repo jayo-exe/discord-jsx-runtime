@@ -1,6 +1,5 @@
 import type { ComponentProps, ComponentFunction, JSXElement } from "./types.js";
 export declare function Fragment(props: ComponentProps): JSXElement[];
-export declare function jsx(type: "br", props: ComponentProps | null): string;
 export declare function jsx(type: ComponentFunction, props: ComponentProps | null): JSXElement;
 export declare const jsxs: typeof jsx;
 export declare namespace JSX {
