@@ -1,23 +1,56 @@
 import type { ComponentProps, ComponentResult, JSXElement, PropsFromAPIType } from "./types"
 import { ButtonStyle, ComponentType, type APIActionRowComponent, type APIBaseComponent, type APIButtonComponent, type APIButtonComponentWithCustomId, type APIButtonComponentWithSKUId, type APIButtonComponentWithURL, type APIChannelSelectComponent, type APICheckboxComponent, type APICheckboxGroupComponent, type APIComponentInActionRow, type APIComponentInContainer, type APIContainerComponent, type APIFileComponent, type APIFileUploadComponent, type APILabelComponent, type APIMediaGalleryComponent, type APIMentionableSelectComponent, type APIMessageTopLevelComponent, type APIModalComponent, type APIModalInteractionResponse, type APIModalInteractionResponseCallbackComponent, type APIModalInteractionResponseCallbackData, type APIRadioGroupComponent, type APIRoleSelectComponent, type APISectionComponent, type APISeparatorComponent, type APIStringSelectComponent, type APITextDisplayComponent, type APITextInputComponent, type APIThumbnailComponent, type APIUserSelectComponent } from "discord-api-types/v10"
 
-export function normalizeChildren(children: JSXElement | JSXElement[]): JSXElement[] {
+const isStringArray = (value: unknown): value is string[] =>
+  Array.isArray(value) && value.every(item => typeof item === "string")
+
+function combineStrings(
+  children: (JSXElement | string)[]
+): (JSXElement | string)[] {
+  return children.reduce<(JSXElement | string)[]>((result, item) => {
+    const last = result[result.length - 1]
+
+    if (typeof item === "string" && typeof last === "string") {
+      result[result.length - 1] = last + item
+    } else {
+      result.push(item)
+    }
+
+    return result
+  }, [])
+}
+
+function convertStrings(
+  children: (JSXElement | string)[]
+): JSXElement[] {
+  return children.map(child => typeof child === "string" ?{type: 10, content: child} : child)
+}
+
+export function normalizeChildren(
+  children: JSXElement | JSXElement[] | string | string[]
+): (JSXElement | string)[] {
   if (children == null || typeof children === "boolean") return []
   if (Array.isArray(children)) return children.flatMap(normalizeChildren)
   return [children]
 }
 
-export function filterChildren(children: JSXElement | JSXElement[], allowedTypes?: JSXElement["type"][]): JSXElement[] {
-  const normalized = normalizeChildren(children!)
+export function filterChildren(
+  children: JSXElement | JSXElement[] | string | string[], 
+  allowedTypes?: (JSXElement["type"] | "string")[],
+  shouldConvertStrings?: boolean
+): (JSXElement | string)[] {
+  const normalized = combineStrings(normalizeChildren(children!))
   if(!allowedTypes || !allowedTypes.length) return normalized
-  return normalized.filter(child => allowedTypes.includes(child.type))
+  const filtered = normalized.filter(child => (typeof child === "string" && allowedTypes.includes("string")) || (typeof child === "object" && allowedTypes.includes(child.type)))
+  if(!shouldConvertStrings) return filtered
+  return convertStrings(filtered)
 }
 
 export function MessageComponent
 <T extends APIBaseComponent<C>, C extends ComponentType, P extends Record<string,unknown> & {
-    children?: JSXElement | JSXElement[] | string
+    children?: JSXElement | JSXElement[] | string | string[]
 } = PropsFromAPIType<T>>
-(type: C, props: P, childrenFilter?: JSXElement["type"][]): T 
+(type: C, props: P, childrenFilter?: (JSXElement["type"] | "string")[]): T 
 {
   let childrenProp: Record<string, unknown> = {}
   let restProps: Record<string, unknown> = props
@@ -26,12 +59,14 @@ export function MessageComponent
   
   const {children, ...rest} = props
   restProps = rest
-  childrenProp = typeof children === "string"
-    ? type === ComponentType.TextDisplay
-      ? { content: children } 
-      : {components: [{type: 10, content: children}]}
-    : { components: filterChildren(children!, childrenFilter) }
-    
+
+  if(type === ComponentType.TextDisplay) {
+    const filtered = filterChildren(children!, childrenFilter) as string[] // We know the result will be a string[] because of our requirements for TextDisplay
+    childrenProp = { content: filtered[0] } // We know that a string[] will come out of filterChildren with a single combined member
+  } else {
+    childrenProp = { components: filterChildren(children!, childrenFilter, true) }
+  }
+  
   return {type, ...restProps, ...childrenProp} as T
 }
 
@@ -98,7 +133,7 @@ export type TextDisplayProps = Omit<PropsFromAPIType<APITextDisplayComponent>,"c
     content?: string;
 }
 export const TextDisplay = (props: TextDisplayProps): APITextDisplayComponent => 
-  MessageComponent<APITextDisplayComponent, ComponentType.TextDisplay, TextDisplayProps>(ComponentType.TextDisplay, props)
+  MessageComponent<APITextDisplayComponent, ComponentType.TextDisplay, TextDisplayProps>(ComponentType.TextDisplay, props, ["string"])
 
 export type SectionProps = Omit<PropsFromAPIType<APISectionComponent>, "accessory"> & { accessory: JSXElement }
 export const Section = (props: SectionProps): APISectionComponent => 

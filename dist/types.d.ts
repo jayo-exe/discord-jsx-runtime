@@ -6,7 +6,7 @@ export type ComponentFunction = (props: ComponentProps, key?: ComponentKey) => J
 export type PropsFromAPIType<T> = T extends unknown ? Omit<T, "type" | "id" | "components"> & (T extends {
     components?: infer C;
 } ? {
-    children?: JSXElement | JSXElement[];
+    children?: JSXElement | JSXElement[] | string | string[];
 } : {}) : never;
 export type JSXElement = ComponentResult;
 //# sourceMappingURL=types.d.ts.map

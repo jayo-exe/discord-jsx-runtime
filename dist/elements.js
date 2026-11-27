@@ -1,4 +1,20 @@
 import { ButtonStyle, ComponentType } from "discord-api-types/v10";
+const isStringArray = (value) => Array.isArray(value) && value.every(item => typeof item === "string");
+function combineStrings(children) {
+    return children.reduce((result, item) => {
+        const last = result[result.length - 1];
+        if (typeof item === "string" && typeof last === "string") {
+            result[result.length - 1] = last + item;
+        }
+        else {
+            result.push(item);
+        }
+        return result;
+    }, []);
+}
+function convertStrings(children) {
+    return children.map(child => typeof child === "string" ? { type: 10, content: child } : child);
+}
 export function normalizeChildren(children) {
     if (children == null || typeof children === "boolean")
         return [];
@@ -6,11 +22,14 @@ export function normalizeChildren(children) {
         return children.flatMap(normalizeChildren);
     return [children];
 }
-export function filterChildren(children, allowedTypes) {
-    const normalized = normalizeChildren(children);
+export function filterChildren(children, allowedTypes, shouldConvertStrings) {
+    const normalized = combineStrings(normalizeChildren(children));
     if (!allowedTypes || !allowedTypes.length)
         return normalized;
-    return normalized.filter(child => allowedTypes.includes(child.type));
+    const filtered = normalized.filter(child => (typeof child === "string" && allowedTypes.includes("string")) || (typeof child === "object" && allowedTypes.includes(child.type)));
+    if (!shouldConvertStrings)
+        return filtered;
+    return convertStrings(filtered);
 }
 export function MessageComponent(type, props, childrenFilter) {
     let childrenProp = {};
@@ -19,11 +38,13 @@ export function MessageComponent(type, props, childrenFilter) {
         return { type, ...childrenProp, ...restProps };
     const { children, ...rest } = props;
     restProps = rest;
-    childrenProp = typeof children === "string"
-        ? type === ComponentType.TextDisplay
-            ? { content: children }
-            : { components: [{ type: 10, content: children }] }
-        : { components: filterChildren(children, childrenFilter) };
+    if (type === ComponentType.TextDisplay) {
+        const filtered = filterChildren(children, childrenFilter); // We know the result will be a string[] because of our requirements for TextDisplay
+        childrenProp = { content: filtered[0] }; // We know that a string[] will come out of filterChildren with a single combined member
+    }
+    else {
+        childrenProp = { components: filterChildren(children, childrenFilter, true) };
+    }
     return { type, ...restProps, ...childrenProp };
 }
 export function MessageObject(components) {
@@ -74,7 +95,7 @@ export const ActionRow = (props) => MessageComponent(ComponentType.ActionRow, pr
 ]);
 export const Button = (props) => MessageComponent(ComponentType.Button, props);
 export const Thumbnail = (props) => MessageComponent(ComponentType.Thumbnail, props);
-export const TextDisplay = (props) => MessageComponent(ComponentType.TextDisplay, props);
+export const TextDisplay = (props) => MessageComponent(ComponentType.TextDisplay, props, ["string"]);
 export const Section = (props) => MessageComponent(ComponentType.Section, props, [ComponentType.TextDisplay]);
 export const Separator = (props) => MessageComponent(ComponentType.Separator, props);
 export const File = (props) => MessageComponent(ComponentType.File, props);
