@@ -25,7 +25,7 @@ export function filterChildren(children, allowedTypes, shouldConvertStrings) {
     const normalized = combineStrings(normalizeChildren(children));
     if (!allowedTypes || !allowedTypes.length)
         return normalized;
-    const filtered = normalized.filter(child => (typeof child === "string" && allowedTypes.includes("string")) || (typeof child === "object" && allowedTypes.includes(child.type)));
+    const filtered = normalized.filter(child => child && ((typeof child === "string" && allowedTypes.includes("string")) || (typeof child === "object" && allowedTypes.includes(child.type))));
     if (!shouldConvertStrings)
         return filtered;
     return convertStrings(filtered);
@@ -40,8 +40,6 @@ export function MessageComponent(type, props, childrenFilter) {
     if (type === ComponentType.TextDisplay) {
         const filtered = filterChildren(children, childrenFilter); // We know the result will be a string[] because of our requirements for TextDisplay
         childrenProp = { content: filtered[0] }; // We know that a string[] will come out of filterChildren with a single combined member
-        // TODO: determine how to handle leading and trailing spaces, spaces after a newline, etc
-        // Current text output can be somewhat messy if using bare text since it accounts for tabbing etc
     }
     else {
         childrenProp = { components: filterChildren(children, childrenFilter, true) }; // convert bare text into text display components
@@ -62,7 +60,8 @@ export function MessageObject(components) {
         ComponentType.Separator,
         ComponentType.TextDisplay
     ];
-    return components.filter(component => topLevelMessageTypes.includes(component.type));
+    const converted = convertStrings(combineStrings(components));
+    return converted.filter(component => component && topLevelMessageTypes.includes(component.type));
 }
 export function ModalObject(custom_id, title, components) {
     if (typeof components === "string")
@@ -74,7 +73,8 @@ export function ModalObject(custom_id, title, components) {
         ComponentType.Label,
         ComponentType.TextDisplay
     ];
-    const modalComponents = components.filter(component => topLevelModalTypes.includes(component.type));
+    const converted = convertStrings(combineStrings(components));
+    const modalComponents = converted.filter(component => component && topLevelModalTypes.includes(component.type));
     return { title, custom_id, components: modalComponents };
 }
 export const Container = (props) => MessageComponent(ComponentType.Container, props, [

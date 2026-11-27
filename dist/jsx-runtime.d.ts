@@ -1,5 +1,5 @@
-import type { ComponentKey, ComponentResult, ComponentProps, ComponentFunction, JSXElement } from "./types.js";
-export declare function Fragment(props: ComponentProps): ComponentResult[];
+import type { ComponentKey, ComponentProps, ComponentFunction, JSXElement } from "./types.js";
+export declare function Fragment(props: ComponentProps): JSXElement[];
 export declare function jsx(type: ComponentFunction, props: ComponentProps | null, key?: ComponentKey): JSXElement;
 export declare const jsxs: typeof jsx;
 export declare namespace JSX {

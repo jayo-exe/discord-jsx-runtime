@@ -1,5 +1,36 @@
-import type { ComponentProps, ComponentResult, JSXElement, PropsFromAPIType } from "./types"
-import { ButtonStyle, ComponentType, type APIActionRowComponent, type APIBaseComponent, type APIButtonComponent, type APIButtonComponentWithCustomId, type APIButtonComponentWithSKUId, type APIButtonComponentWithURL, type APIChannelSelectComponent, type APICheckboxComponent, type APICheckboxGroupComponent, type APIComponentInActionRow, type APIComponentInContainer, type APIContainerComponent, type APIFileComponent, type APIFileUploadComponent, type APILabelComponent, type APIMediaGalleryComponent, type APIMentionableSelectComponent, type APIMessageTopLevelComponent, type APIModalComponent, type APIModalInteractionResponse, type APIModalInteractionResponseCallbackComponent, type APIModalInteractionResponseCallbackData, type APIRadioGroupComponent, type APIRoleSelectComponent, type APISectionComponent, type APISeparatorComponent, type APIStringSelectComponent, type APITextDisplayComponent, type APITextInputComponent, type APIThumbnailComponent, type APIUserSelectComponent } from "discord-api-types/v10"
+import { ButtonStyle, ComponentType } from "discord-api-types/v10"
+import type { ComponentResult, JSXElement, PropsFromAPIType } from "./types"
+
+import type { 
+  APIActionRowComponent, 
+  APIBaseComponent, 
+  APIButtonComponent, 
+  APIButtonComponentWithCustomId, 
+  APIButtonComponentWithSKUId, 
+  APIButtonComponentWithURL, 
+  APIChannelSelectComponent, 
+  APICheckboxComponent, 
+  APICheckboxGroupComponent, 
+  APIComponentInActionRow,  
+  APIContainerComponent, 
+  APIFileComponent, 
+  APIFileUploadComponent, 
+  APILabelComponent, 
+  APIMediaGalleryComponent, 
+  APIMentionableSelectComponent, 
+  APIMessageTopLevelComponent, 
+  APIModalInteractionResponseCallbackComponent, 
+  APIModalInteractionResponseCallbackData, 
+  APIRadioGroupComponent, 
+  APIRoleSelectComponent, 
+  APISectionComponent, 
+  APISeparatorComponent, 
+  APIStringSelectComponent, 
+  APITextDisplayComponent, 
+  APITextInputComponent, 
+  APIThumbnailComponent, 
+  APIUserSelectComponent 
+} from "discord-api-types/v10"
 
 function combineStrings(
   children: (JSXElement | string)[]
@@ -33,12 +64,12 @@ export function normalizeChildren(
 
 export function filterChildren(
   children: JSXElement | JSXElement[] | string | string[], 
-  allowedTypes?: (JSXElement["type"] | "string")[],
+  allowedTypes?: (ComponentResult["type"] | "string")[],
   shouldConvertStrings?: boolean
 ): (JSXElement | string)[] {
   const normalized = combineStrings(normalizeChildren(children!))
   if(!allowedTypes || !allowedTypes.length) return normalized
-  const filtered = normalized.filter(child => (typeof child === "string" && allowedTypes.includes("string")) || (typeof child === "object" && allowedTypes.includes(child.type)))
+  const filtered = normalized.filter(child => child && ((typeof child === "string" && allowedTypes.includes("string")) || (typeof child === "object" && allowedTypes.includes(child.type))))
   if(!shouldConvertStrings) return filtered
   return convertStrings(filtered)
 }
@@ -47,7 +78,7 @@ export function MessageComponent
 <T extends APIBaseComponent<C>, C extends ComponentType, P extends Record<string,unknown> & {
     children?: JSXElement | JSXElement[] | string | string[]
 } = PropsFromAPIType<T>>
-(type: C, props: P, childrenFilter?: (JSXElement["type"] | "string")[]): T 
+(type: C, props: P, childrenFilter?: (ComponentResult["type"] | "string")[]): T 
 {
   let childrenProp: Record<string, unknown> = {}
   let restProps: Record<string, unknown> = props
@@ -60,8 +91,6 @@ export function MessageComponent
   if(type === ComponentType.TextDisplay) {
     const filtered = filterChildren(children!, childrenFilter) as string[] // We know the result will be a string[] because of our requirements for TextDisplay
     childrenProp = { content: filtered[0] } // We know that a string[] will come out of filterChildren with a single combined member
-    // TODO: determine how to handle leading and trailing spaces, spaces after a newline, etc
-    // Current text output can be somewhat messy if using bare text since it accounts for tabbing etc
   } else {
     childrenProp = { components: filterChildren(children!, childrenFilter, true) } // convert bare text into text display components
   }
@@ -81,7 +110,8 @@ export function MessageObject(components: JSXElement | JSXElement[] | string,): 
     ComponentType.Separator,
     ComponentType.TextDisplay
   ]
-  return components.filter(component => topLevelMessageTypes.includes(component.type)) as APIMessageTopLevelComponent[]
+  const converted = convertStrings(combineStrings(components))
+  return converted.filter(component => component && topLevelMessageTypes.includes(component.type)) as APIMessageTopLevelComponent[]
 }
 
 export function ModalObject(custom_id: string, title: string, components: JSXElement | JSXElement[] | string,): APIModalInteractionResponseCallbackData {
@@ -92,7 +122,8 @@ export function ModalObject(custom_id: string, title: string, components: JSXEle
     ComponentType.Label,
     ComponentType.TextDisplay
   ]
-  const modalComponents = components.filter(component => topLevelModalTypes.includes(component.type)) as APIModalInteractionResponseCallbackComponent[]
+  const converted = convertStrings(combineStrings(components))
+  const modalComponents = converted.filter(component => component && topLevelModalTypes.includes(component.type)) as APIModalInteractionResponseCallbackComponent[]
   return {title, custom_id, components: modalComponents}
 }
 
@@ -129,8 +160,8 @@ export const Thumbnail = (props: ThumbnailProps): APIThumbnailComponent =>
   MessageComponent<APIThumbnailComponent, ComponentType.Thumbnail>(ComponentType.Thumbnail, props)
 
 export type TextDisplayProps = Omit<PropsFromAPIType<APITextDisplayComponent>,"content"> & {
-    children?: string | string[];
-    content?: string;
+    children?: string | string[]
+    content?: string
 }
 export const TextDisplay = (props: TextDisplayProps): APITextDisplayComponent => 
   MessageComponent<APITextDisplayComponent, ComponentType.TextDisplay, TextDisplayProps>(ComponentType.TextDisplay, props, ["string"])

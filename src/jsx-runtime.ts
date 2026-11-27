@@ -1,19 +1,20 @@
-import type { ComponentKey, ComponentResult, ComponentProps, ComponentFunction, JSXElement } from "./types.js"
+import type { ComponentProps, ComponentFunction, JSXElement } from "./types.js"
 
-export function Fragment(props: ComponentProps): ComponentResult[] {
+export function Fragment(props: ComponentProps): JSXElement[] {
+  if(props.if === false) return []
   return Array.isArray(props.children)
-    ? props.children as ComponentResult[]
+    ? props.children as JSXElement[]
     : props.children
-      ? [props.children as ComponentResult]
+      ? [props.children as JSXElement]
       : []
 }
 
 export function jsx(
-  type: ComponentFunction,
-  props: ComponentProps | null,
-  key?: ComponentKey
-): JSXElement {
-  return type(props ?? {}, key)
+  type: ComponentFunction | "br",
+  props: ComponentProps | null
+): JSXElement | string {
+  if (type === "br") return "\n"
+  return type(props ?? {})
 }
 
 export const jsxs = jsx

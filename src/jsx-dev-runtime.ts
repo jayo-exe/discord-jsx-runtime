@@ -1,24 +1,23 @@
-import type { ComponentKey, ComponentResult, ComponentProps, ComponentFunction } from "./types.js"
+import type { ComponentProps, ComponentFunction, JSXElement } from "./types.js"
 import { jsx, Fragment } from "./jsx-runtime.js"
 
 export { Fragment }
 
 export function jsxDEV(
-  type: ComponentFunction,
+  type: ComponentFunction | "br",
     props: ComponentProps | null,
-    key?: ComponentKey,
   _isStaticChildren?: boolean,
   _source?: unknown,
   _self?: unknown
-): ComponentResult {
-  return jsx(type, props, key)
+): JSXElement | string {
+  if (type === "br") return "\n"
+  return jsx(type, props)
 }
 
 export namespace JSX {
-  export type Element = ComponentResult
+  export type Element = JSXElement
 
   export interface IntrinsicElements {
     [elementName: string]: Record<string, unknown>
   }
 }
-
