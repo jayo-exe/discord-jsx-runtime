@@ -9,6 +9,8 @@ export function Fragment(props: ComponentProps): JSXElement[] {
       : []
 }
 
+export function jsx(type: "br", props: ComponentProps | null): string
+export function jsx(type: ComponentFunction, props: ComponentProps | null): JSXElement
 export function jsx(
   type: ComponentFunction | "br",
   props: ComponentProps | null
