@@ -1,5 +1,4 @@
 import { ButtonStyle, ComponentType } from "discord-api-types/v10";
-const isStringArray = (value) => Array.isArray(value) && value.every(item => typeof item === "string");
 function combineStrings(children) {
     return children.reduce((result, item) => {
         const last = result[result.length - 1];
@@ -41,9 +40,11 @@ export function MessageComponent(type, props, childrenFilter) {
     if (type === ComponentType.TextDisplay) {
         const filtered = filterChildren(children, childrenFilter); // We know the result will be a string[] because of our requirements for TextDisplay
         childrenProp = { content: filtered[0] }; // We know that a string[] will come out of filterChildren with a single combined member
+        // TODO: determine how to handle leading and trailing spaces, spaces after a newline, etc
+        // Current text output can be somewhat messy if using bare text since it accounts for tabbing etc
     }
     else {
-        childrenProp = { components: filterChildren(children, childrenFilter, true) };
+        childrenProp = { components: filterChildren(children, childrenFilter, true) }; // convert bare text into text display components
     }
     return { type, ...restProps, ...childrenProp };
 }
@@ -82,7 +83,8 @@ export const Container = (props) => MessageComponent(ComponentType.Container, pr
     ComponentType.MediaGallery,
     ComponentType.Section,
     ComponentType.Separator,
-    ComponentType.TextDisplay
+    ComponentType.TextDisplay,
+    "string"
 ]);
 export const ActionRow = (props) => MessageComponent(ComponentType.ActionRow, props, [
     ComponentType.TextInput,

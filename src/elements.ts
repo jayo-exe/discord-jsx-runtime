@@ -1,9 +1,6 @@
 import type { ComponentProps, ComponentResult, JSXElement, PropsFromAPIType } from "./types"
 import { ButtonStyle, ComponentType, type APIActionRowComponent, type APIBaseComponent, type APIButtonComponent, type APIButtonComponentWithCustomId, type APIButtonComponentWithSKUId, type APIButtonComponentWithURL, type APIChannelSelectComponent, type APICheckboxComponent, type APICheckboxGroupComponent, type APIComponentInActionRow, type APIComponentInContainer, type APIContainerComponent, type APIFileComponent, type APIFileUploadComponent, type APILabelComponent, type APIMediaGalleryComponent, type APIMentionableSelectComponent, type APIMessageTopLevelComponent, type APIModalComponent, type APIModalInteractionResponse, type APIModalInteractionResponseCallbackComponent, type APIModalInteractionResponseCallbackData, type APIRadioGroupComponent, type APIRoleSelectComponent, type APISectionComponent, type APISeparatorComponent, type APIStringSelectComponent, type APITextDisplayComponent, type APITextInputComponent, type APIThumbnailComponent, type APIUserSelectComponent } from "discord-api-types/v10"
 
-const isStringArray = (value: unknown): value is string[] =>
-  Array.isArray(value) && value.every(item => typeof item === "string")
-
 function combineStrings(
   children: (JSXElement | string)[]
 ): (JSXElement | string)[] {
@@ -63,8 +60,10 @@ export function MessageComponent
   if(type === ComponentType.TextDisplay) {
     const filtered = filterChildren(children!, childrenFilter) as string[] // We know the result will be a string[] because of our requirements for TextDisplay
     childrenProp = { content: filtered[0] } // We know that a string[] will come out of filterChildren with a single combined member
+    // TODO: determine how to handle leading and trailing spaces, spaces after a newline, etc
+    // Current text output can be somewhat messy if using bare text since it accounts for tabbing etc
   } else {
-    childrenProp = { components: filterChildren(children!, childrenFilter, true) }
+    childrenProp = { components: filterChildren(children!, childrenFilter, true) } // convert bare text into text display components
   }
   
   return {type, ...restProps, ...childrenProp} as T
@@ -105,7 +104,8 @@ export const Container = (props: ContainerProps): APIContainerComponent =>
     ComponentType.MediaGallery,
     ComponentType.Section,
     ComponentType.Separator,
-    ComponentType.TextDisplay
+    ComponentType.TextDisplay,
+    "string"
   ])
 
 export type ActionRowProps = PropsFromAPIType<APIActionRowComponent<APIComponentInActionRow>>
@@ -129,7 +129,7 @@ export const Thumbnail = (props: ThumbnailProps): APIThumbnailComponent =>
   MessageComponent<APIThumbnailComponent, ComponentType.Thumbnail>(ComponentType.Thumbnail, props)
 
 export type TextDisplayProps = Omit<PropsFromAPIType<APITextDisplayComponent>,"content"> & {
-    children?: string;
+    children?: string | string[];
     content?: string;
 }
 export const TextDisplay = (props: TextDisplayProps): APITextDisplayComponent => 
@@ -201,8 +201,6 @@ export const Label = (props: LabelProps): APILabelComponent =>
     ComponentType.MentionableSelect,
     ComponentType.StringSelect
   ])
-
-  //APICheckboxComponent | APICheckboxGroupComponent | APIFileUploadComponent | APIRadioGroupComponent | APITextInputComponent
 
 export type TextInputProps = PropsFromAPIType<APITextInputComponent>
 export const TextInput = (props: TextInputProps): APITextInputComponent => 
