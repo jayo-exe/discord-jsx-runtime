@@ -7,7 +7,9 @@ export function Fragment(props) {
             ? [props.children]
             : [];
 }
-export function jsx(type, props, key) {
+export function jsx(type, props) {
+    if (type === "br")
+        return "\n";
     return type(props ?? {});
 }
 export const jsxs = jsx;

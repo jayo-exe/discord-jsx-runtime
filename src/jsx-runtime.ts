@@ -12,7 +12,7 @@ export function Fragment(props: ComponentProps): JSXElement[] {
 export function jsx(
   type: ComponentFunction | "br",
   props: ComponentProps | null
-): JSXElement | string {
+): JSXElement {
   if (type === "br") return "\n"
   return type(props ?? {})
 }

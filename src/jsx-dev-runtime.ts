@@ -9,7 +9,7 @@ export function jsxDEV(
   _isStaticChildren?: boolean,
   _source?: unknown,
   _self?: unknown
-): JSXElement | string {
+): JSXElement {
   if (type === "br") return "\n"
   return jsx(type, props)
 }

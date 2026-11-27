@@ -111,7 +111,7 @@ export function MessageObject(components: JSXElement | JSXElement[] | string,): 
     ComponentType.TextDisplay
   ]
   const converted = convertStrings(combineStrings(components))
-  return converted.filter(component => component && topLevelMessageTypes.includes(component.type)) as APIMessageTopLevelComponent[]
+  return converted.filter(component => component && topLevelMessageTypes.includes((component as ComponentResult).type)) as APIMessageTopLevelComponent[]
 }
 
 export function ModalObject(custom_id: string, title: string, components: JSXElement | JSXElement[] | string,): APIModalInteractionResponseCallbackData {
@@ -123,7 +123,7 @@ export function ModalObject(custom_id: string, title: string, components: JSXEle
     ComponentType.TextDisplay
   ]
   const converted = convertStrings(combineStrings(components))
-  const modalComponents = converted.filter(component => component && topLevelModalTypes.includes(component.type)) as APIModalInteractionResponseCallbackComponent[]
+  const modalComponents = converted.filter(component => component && topLevelModalTypes.includes((component as ComponentResult).type)) as APIModalInteractionResponseCallbackComponent[]
   return {title, custom_id, components: modalComponents}
 }
 
