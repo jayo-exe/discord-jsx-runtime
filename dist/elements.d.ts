@@ -51,7 +51,9 @@ export type ChannelSelectProps = PropsFromAPIType<APIChannelSelectComponent>;
 export declare const ChannelSelect: (props: ChannelSelectProps) => APIChannelSelectComponent;
 export type StringSelectProps = PropsFromAPIType<APIStringSelectComponent>;
 export declare const StringSelect: (props: StringSelectProps) => APIStringSelectComponent;
-export type LabelProps = PropsFromAPIType<APILabelComponent>;
+export type LabelProps = Omit<PropsFromAPIType<APILabelComponent>, "component"> & {
+    children: JSXElement;
+};
 export declare const Label: (props: LabelProps) => APILabelComponent;
 export type TextInputProps = PropsFromAPIType<APITextInputComponent>;
 export declare const TextInput: (props: TextInputProps) => APITextInputComponent;

@@ -88,9 +88,13 @@ export function MessageComponent
   const {children, ...rest} = props
   restProps = rest
 
+  // TODO: handle these special cases in thier components rather than the common handler
   if(type === ComponentType.TextDisplay) {
     const filtered = filterChildren(children!, childrenFilter) as string[] // We know the result will be a string[] because of our requirements for TextDisplay
     childrenProp = { content: filtered[0] } // We know that a string[] will come out of filterChildren with a single combined member
+  } else if(type === ComponentType.Label) {
+    const filtered = filterChildren(children!, childrenFilter)
+    childrenProp = { component: filtered[0] ?? null }
   } else {
     childrenProp = { components: filterChildren(children!, childrenFilter, true) } // convert bare text into text display components
   }
@@ -218,9 +222,9 @@ export type StringSelectProps = PropsFromAPIType<APIStringSelectComponent>
 export const StringSelect = (props: StringSelectProps): APIStringSelectComponent => 
   MessageComponent<APIStringSelectComponent, ComponentType.StringSelect>(ComponentType.StringSelect, props)
 
-export type LabelProps = PropsFromAPIType<APILabelComponent>
+export type LabelProps = Omit<PropsFromAPIType<APILabelComponent>, "component"> & {children: JSXElement }
 export const Label = (props: LabelProps): APILabelComponent => 
-  MessageComponent<APILabelComponent, ComponentType.Label>(ComponentType.Label, props, [
+  MessageComponent<APILabelComponent, ComponentType.Label, LabelProps>(ComponentType.Label, props, [
     ComponentType.TextInput,
     ComponentType.Checkbox,
     ComponentType.CheckboxGroup,
@@ -283,3 +287,5 @@ export const ThumbnailSection = (props: ThumbnailSectionProps) => Section({
   children: props.children,
   accessory: Thumbnail(props)
 })
+
+// TODO: Label convenience elements for each to the fields that a label can contain
